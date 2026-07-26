@@ -129,13 +129,7 @@ TGURL="https://api.telegram.org/bot${TGTOKEN}/sendMessage"
 
 ## Telegram 通知
 
-Cloudflare 明确确认 DNS 更新成功并写入本地 IP 缓存后，脚本会发送：
-
-```text
-2026-07-26 22:52:02 🇭🇰香港BoilCloud NAT的公网IP发生变化，新的IP是203.0.113.9，DNS记录已经更新成功
-```
-
-时间戳使用运行脚本的机器本地时间，格式为 `YYYY-MM-DD HH:MM:SS`。Telegram 发送失败只会输出警告，不会把已经完成的 DNS 更新标记为失败。
+脚本支持给TG Bot发送通知。
 
 ## 设置定时任务
 
