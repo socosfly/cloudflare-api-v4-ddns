@@ -17,6 +17,9 @@ FORCE="${FORCE:-false}"
 CF_CACHE_DIR="${CF_CACHE_DIR:-${XDG_STATE_HOME:-${HOME}/.local/state}/cf-ddns}"
 IPV4_SOURCE="${IPV4_SOURCE:-https://api4.ipify.org}"
 IPV6_SOURCE="${IPV6_SOURCE:-https://api6.ipify.org}"
+TGCHATID="${TGCHATID:-}"
+TGTOKEN="${TGTOKEN:-}"
+TGURL="${TGURL:-https://api.telegram.org/bot${TGTOKEN}/sendMessage}"
 # -----------------------------------------------------------------
 
 usage() {
@@ -227,6 +230,27 @@ update_record() {
     "${AUTH_HEADERS[@]}" -H "Content-Type: application/json" --data "$body"
 }
 
+send_telegram_notification() {
+  local msg telegram_response
+
+  [[ -n "$TGCHATID" && -n "$TGTOKEN" ]] || return 0
+  msg="🇭🇰香港BoilCloud NAT的公网IP发生变化，新的IP是${WAN_IP}，DNS记录已经更新成功"
+
+  if ! telegram_response=$(curl -s \
+    -d "chat_id=$TGCHATID&text=${msg}&disable_web_page_preview=true&parse_mode=markdown" \
+    "$TGURL"); then
+    printf 'WARNING: failed to send Telegram notification.\n' >&2
+    return 0
+  fi
+
+  if jq -e '.ok == true' >/dev/null 2>&1 <<<"$telegram_response"; then
+    printf 'Telegram notification sent successfully.\n'
+  else
+    printf 'WARNING: Telegram rejected the notification: %s\n' \
+      "$(jq -r '.description // "unknown error"' <<<"$telegram_response" 2>/dev/null || printf '%s' "$telegram_response")" >&2
+  fi
+}
+
 printf 'Updating %s %s to %s...\n' "$CFRECORD_TYPE" "$CFRECORD_NAME" "$WAN_IP"
 RESPONSE=$(update_record) || die "Cloudflare update request failed"
 
@@ -243,6 +267,7 @@ if api_success "$RESPONSE" &&
   printf '%s\n' "$WAN_IP" >"$tmp"
   mv "$tmp" "$WAN_IP_FILE"
   printf 'Updated successfully. Cache: %s\n' "$WAN_IP_FILE"
+  send_telegram_notification
 else
   printf 'ERROR: Cloudflare did not confirm the update.\n' >&2
   api_errors "$RESPONSE" >&2
