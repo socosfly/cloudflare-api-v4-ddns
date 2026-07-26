@@ -1,4 +1,5 @@
 # Cloudflare API v4 DDNS
+# forked from yulewang/cloudflare-api-v4-ddns
 
 使用 Bash 自动检测公网 IP，并更新 Cloudflare DNS 记录。仅在 IP 发生变化时请求更新，支持 IPv4（A）和 IPv6（AAAA），更新成功后可选发送 Telegram Bot 通知。
 
