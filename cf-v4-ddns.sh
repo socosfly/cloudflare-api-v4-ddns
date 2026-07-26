@@ -231,10 +231,11 @@ update_record() {
 }
 
 send_telegram_notification() {
-  local msg telegram_response
+  local timestamp msg telegram_response
 
   [[ -n "$TGCHATID" && -n "$TGTOKEN" ]] || return 0
-  msg="🇭🇰香港BoilCloud NAT的公网IP发生变化，新的IP是${WAN_IP}，DNS记录已经更新成功"
+  timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+  msg="${timestamp} 🇭🇰香港BoilCloud NAT的公网IP发生变化，新的IP是${WAN_IP}，DNS记录已经更新成功"
 
   if ! telegram_response=$(curl -s \
     -d "chat_id=$TGCHATID&text=${msg}&disable_web_page_preview=true&parse_mode=markdown" \
