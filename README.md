@@ -22,3 +22,4 @@ crontab -e
 ```
 */2 * * * * /usr/local/bin/cf-ddns.sh >> /var/log/cf-ddns.log 2>&1
 ```
+支持向TG Bot推送DNS更新，配置chatid和token即可
