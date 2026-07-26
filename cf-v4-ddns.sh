@@ -48,7 +48,7 @@ CFTTL=120
 # Ignore local file, update ip anyway
 FORCE=false
 
-WANIPSITE="http://ipv4.icanhazip.com"
+WANIPSITE="http://checkip.amazonaws.com"
 
 # Site to retrieve WAN ip, other examples are: bot.whatismyipaddress.com, https://api.ipify.org/ ...
 if [ "$CFRECORD_TYPE" = "A" ]; then
