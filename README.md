@@ -3,9 +3,13 @@ Now the script also supports v6(AAAA DDNS Recoards)
 
 下载cf-v4-ddns.sh,编辑一下加到crontab里
 
-sudo wget https://raw.githubusercontent.com/socosfly/cloudflare-api-v4-ddns/master/cf-v4-ddns.sh -O /usr/local/bin/cf-ddns.sh
-sudo chmod +x /usr/local/bin/cf-ddns.sh
-sudo nano /usr/local/bin/cf-ddns.sh
+
+```sudo wget https://raw.githubusercontent.com/socosfly/cloudflare-api-v4-ddns/master/cf-v4-ddns.sh -O /usr/local/bin/cf-ddns.sh```
+
+```sudo chmod +x /usr/local/bin/cf-ddns.sh```
+
+```sudo nano /usr/local/bin/cf-ddns.sh```
+
 
 修改default config下的几个配置变量
 
